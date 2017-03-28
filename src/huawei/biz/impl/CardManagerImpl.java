@@ -41,6 +41,9 @@ public class CardManagerImpl implements CardManager
         throws SubwayException
     {
         Card card;
+        if (!(0<Integer.parseInt(enterStation.substring(1))&&Integer.parseInt(enterStation.substring(1))<99
+                &&Integer.parseInt(exitStation.substring(1))>0&&Integer.parseInt(exitStation.substring(1))<99))
+            throw new SubwayException(ReturnCodeEnum.E01,null);
         if (count>MAX_COUNT)
             throw new SubwayException(ReturnCodeEnum.E08,null);
         else {
