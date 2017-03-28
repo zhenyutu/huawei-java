@@ -47,9 +47,12 @@ public class CardManagerImpl implements CardManager
         if (count>MAX_COUNT)
             throw new SubwayException(ReturnCodeEnum.E08,null);
         else {
-            String cardID = String.valueOf(count);
-            card = new Card(cardID,cardEnum,money);
-            cards.put(cardID,card);
+            card = new Card();
+            String cardId = String.valueOf(count);
+            card.setCardId(cardId);
+            card.setCardType(cardEnum);
+            card.setMoney(money);
+            cards.put(cardId,card);
             count++;
         }
         return card;
