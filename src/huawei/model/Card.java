@@ -31,6 +31,12 @@ public class Card
      */
     private String cardId;
 
+    public Card(String cardId,CardEnum cardType,int money){
+        this.cardId = cardId;
+        this.cardType = cardType;
+        this.money = money;
+    }
+
     public CardEnum getCardType()
     {
         return cardType;

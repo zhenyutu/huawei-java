@@ -2,10 +2,14 @@ package huawei.biz.impl;
 
 import huawei.biz.CardManager;
 import huawei.exam.CardEnum;
+import huawei.exam.ReturnCodeEnum;
 import huawei.exam.SubwayException;
 import huawei.model.Card;
 import huawei.model.ConsumeRecord;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: 待考生实现类</p>
@@ -21,6 +25,12 @@ import java.util.List;
  */
 public class CardManagerImpl implements CardManager
 {
+    private static final int MAX_COUNT = 99;
+
+    private int count = 0;
+    private Map<String,Card> cards = new HashMap<>();
+    private Map<String,List<ConsumeRecord>> consumeRecords = new HashMap<>();
+
     @Override
     public Card buyCard(String enterStation, String exitStation)
         throws SubwayException
@@ -33,46 +43,86 @@ public class CardManagerImpl implements CardManager
     public Card buyCard(CardEnum cardEnum, int money)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        Card card;
+        if (count>MAX_COUNT)
+            throw new SubwayException(ReturnCodeEnum.E08,null);
+        else {
+            String cardID = String.valueOf(count);
+            card = new Card(cardID,cardEnum,money);
+            cards.put(cardID,card);
+            count++;
+        }
+        return card;
     }
 
     @Override
     public Card recharge(String cardId, int money)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        Card card;
+        if (!cards.keySet().contains(cardId))
+            throw new SubwayException(ReturnCodeEnum.E06,null);
+        else {
+            card = cards.get(cardId);
+            card.setMoney(card.getMoney()+money);
+        }
+        return card;
     }
 
     @Override
     public Card queryCard(String cardId) throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        Card card;
+        if (!cards.keySet().contains(cardId))
+            throw new SubwayException(ReturnCodeEnum.E06,null);
+        else {
+            card = cards.get(cardId);
+        }
+        return card;
     }
 
     @Override
     public Card deleteCard(String cardId)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        Card card;
+        if (!cards.keySet().contains(cardId))
+            throw new SubwayException(ReturnCodeEnum.E06,null);
+        else {
+            card = cards.remove(cardId);
+            count--;
+        }
+        return card;
     }
 
     @Override
     public Card consume(String cardId, int billing)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        Card card;
+        if (!cards.keySet().contains(cardId))
+            throw new SubwayException(ReturnCodeEnum.E06,null);
+        else if (cards.get(cardId).getMoney()<billing) {
+            card = cards.get(cardId);
+            throw new SubwayException(ReturnCodeEnum.E02, card);
+        }
+        else {
+            card = cards.get(cardId);
+            card.setMoney(card.getMoney()- billing);
+        }
+        return card;
     }
 
     @Override
     public List<ConsumeRecord> queryConsumeRecord(String cardId)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        List<ConsumeRecord> consumeRecord;
+        if (!cards.keySet().contains(cardId))
+            throw new SubwayException(ReturnCodeEnum.E06,null);
+        else {
+            consumeRecord = consumeRecords.get(cardId);
+        }
+        return consumeRecord;
     }
 }
