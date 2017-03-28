@@ -65,6 +65,8 @@ public class SubwayManagerImpl implements SubwayManager
                             throw new SubwayException(ReturnCodeEnum.E02,card);
                         else
                             card.setMoney(0);
+                    }else {
+                        card.setMoney(0);
                     }
                 }else {
                     int money = calculateCost(calculateDistance(enterStation,exitStation));
@@ -75,14 +77,42 @@ public class SubwayManagerImpl implements SubwayManager
                 }
                 break;
             case B:
+                if (enterStation.equals(exitStation)){
+                    if (isOverTime(enterStation,exitStation)){
+                        if (card.getMoney()<3)
+                            throw new SubwayException(ReturnCodeEnum.E02,card);
+                        else
+                            card.setMoney(card.getMoney()-3);
+                    }
+                }else {
+                    int money = 0;
+                    if ("10:00".compareTo(enterTime)<=0 && "15:00".compareTo(enterTime)>=0)
+                        money = (int) (calculateCost(calculateDistance(enterStation,exitStation)) * 0.8);
+                    else
+                        money = calculateCost(calculateDistance(enterStation,exitStation));
+                    if (money>card.getMoney())
+                        throw new SubwayException(ReturnCodeEnum.E02,card);
+                    else
+                        card.setMoney(card.getMoney()-money);
+                }
                 
             case C:
-
-            case D:
-
-            case E:
+                if (enterStation.equals(exitStation)){
+                    if (isOverTime(enterStation,exitStation)){
+                        if (card.getMoney()<3)
+                            throw new SubwayException(ReturnCodeEnum.E02,card);
+                        else
+                            card.setMoney(card.getMoney()-3);
+                    }
+                }else {
+                    int money = calculateCost(calculateDistance(enterStation,exitStation));
+                    if (money>card.getMoney())
+                        throw new SubwayException(ReturnCodeEnum.E02,card);
+                    else
+                        card.setMoney(card.getMoney()-money);
+                }
         }
-        return null;
+        return card;
     }
 
     public int calculateDistance(String enterStation,String exitStation){

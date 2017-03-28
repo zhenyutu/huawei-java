@@ -73,8 +73,7 @@ public class PassengerImpl implements Passenger
     public Card takeSubway(String cardId, String enterStation, String enterTime, String exitStation, String exitTime)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return subwayManager.takeSubway(cardId,enterStation,enterTime,exitStation,exitTime);
     }
 
     @Override

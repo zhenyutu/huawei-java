@@ -21,6 +21,7 @@ public class SubwayManagerImplTest {
 //        System.out.println(dijkstraSP.distTo(5));
 
         String str = "10:00";
-        System.out.println(str.substring(0,2));
+        String str2 = "10:01";
+        System.out.println(str2.compareTo(str));
     }
 }
