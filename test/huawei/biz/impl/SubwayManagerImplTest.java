@@ -19,9 +19,5 @@ public class SubwayManagerImplTest {
 //        DijkstraSP dijkstraSP = new DijkstraSP(graph,1);
 //        System.out.println(dijkstraSP.pathTo(5));
 //        System.out.println(dijkstraSP.distTo(5));
-
-        String str = "10:00";
-        String str2 = "10:01";
-        System.out.println(str2.compareTo(str));
     }
 }

@@ -11,6 +11,7 @@ import huawei.model.Card;
 import huawei.model.ConsumeRecord;
 import huawei.model.Subways;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,5 +153,17 @@ public class CardManagerImpl implements CardManager
             consumeRecord = consumeRecords.get(cardId);
         }
         return consumeRecord;
+    }
+
+    public void addConsumeRecord(String cardId,String enterStation,String exitStation,String enterTime,String exitTime,int consumeMoney){
+        if (!consumeRecords.keySet().contains(cardId)){
+            List<ConsumeRecord> singleConsumeRecord = new ArrayList<>();
+            singleConsumeRecord.add(new ConsumeRecord(enterStation,exitStation,enterTime,exitTime,consumeMoney));
+            consumeRecords.put(cardId,singleConsumeRecord);
+        }else {
+            List<ConsumeRecord> singleConsumeRecord = consumeRecords.get(cardId);
+            singleConsumeRecord.add(new ConsumeRecord(enterStation,exitStation,enterTime,exitTime,consumeMoney));
+            consumeRecords.put(cardId,singleConsumeRecord);
+        }
     }
 }

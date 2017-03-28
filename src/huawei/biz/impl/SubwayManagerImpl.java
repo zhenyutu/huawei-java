@@ -81,8 +81,10 @@ public class SubwayManagerImpl implements SubwayManager
                     if (isOverTime(enterStation,exitStation)){
                         if (card.getMoney()<3)
                             throw new SubwayException(ReturnCodeEnum.E02,card);
-                        else
-                            card.setMoney(card.getMoney()-3);
+                        else {
+                            card.setMoney(card.getMoney() - 3);
+                            cardManager.addConsumeRecord(cardId,enterStation,exitStation,enterTime,exitTime,3);
+                        }
                     }
                 }else {
                     int money = 0;
@@ -92,8 +94,10 @@ public class SubwayManagerImpl implements SubwayManager
                         money = calculateCost(calculateDistance(enterStation,exitStation));
                     if (money>card.getMoney())
                         throw new SubwayException(ReturnCodeEnum.E02,card);
-                    else
-                        card.setMoney(card.getMoney()-money);
+                    else {
+                        card.setMoney(card.getMoney() - money);
+                        cardManager.addConsumeRecord(cardId,enterStation,exitStation,enterTime,exitTime,money);
+                    }
                 }
                 
             case C:
@@ -101,15 +105,19 @@ public class SubwayManagerImpl implements SubwayManager
                     if (isOverTime(enterStation,exitStation)){
                         if (card.getMoney()<3)
                             throw new SubwayException(ReturnCodeEnum.E02,card);
-                        else
-                            card.setMoney(card.getMoney()-3);
+                        else {
+                            card.setMoney(card.getMoney() - 3);
+                            cardManager.addConsumeRecord(cardId,enterStation,exitStation,enterTime,exitTime,3);
+                        }
                     }
                 }else {
                     int money = calculateCost(calculateDistance(enterStation,exitStation));
                     if (money>card.getMoney())
                         throw new SubwayException(ReturnCodeEnum.E02,card);
-                    else
-                        card.setMoney(card.getMoney()-money);
+                    else {
+                        card.setMoney(card.getMoney() - money);
+                        cardManager.addConsumeRecord(cardId,enterStation,exitStation,enterTime,exitTime,money);
+                    }
                 }
         }
         return card;

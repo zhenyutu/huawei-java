@@ -87,4 +87,6 @@ public interface CardManager
      * @throws SubwayException the subway exception
      */
     List<ConsumeRecord> queryConsumeRecord(String cardId) throws SubwayException;
+
+    public void addConsumeRecord(String cardId,String enterStation,String exitStation,String enterTime,String exitTime,int consumeMoney);
 }

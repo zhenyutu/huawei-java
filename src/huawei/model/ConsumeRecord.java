@@ -38,6 +38,16 @@ public class ConsumeRecord
      */
     private int consumeMoney;
 
+    public ConsumeRecord(){}
+
+    public ConsumeRecord(String enterStation,String exitStation,String enterTime,String exitTime,int consumeMoney){
+        this.enterStation = enterStation;
+        this.exitStation = exitStation;
+        this.enterTime = enterTime;
+        this.exitTime = exitTime;
+        this.consumeMoney = consumeMoney;
+    }
+
     public String getEnterStation()
     {
         return enterStation;
