@@ -25,8 +25,8 @@ public class DijkstraSP {
 
     private void relax(Edge e,Integer start) {
         int v = start, w = e.otherPoint(start);
-        if (distTo[w] > distTo[v] + e.getCost()) {
-            distTo[w] = distTo[v] + e.getCost();
+        if (distTo[w] > distTo[v] + e.getDistance()) {
+            distTo[w] = distTo[v] + e.getDistance();
             edgeTo[w] = e;
             if (pq.contains(w))
                 pq.decreaseKey(w, distTo[w]);

@@ -39,39 +39,34 @@ public class PassengerImpl implements Passenger
     public Card buyCard(String enterStation, String exitStation)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.buyCard(enterStation,exitStation);
     }
 
     @Override
     public Card buyCard(CardEnum cardEnum, int money)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.buyCard(cardEnum,money);
     }
 
     @Override
     public Card recharge(String cardId, int money)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.recharge(cardId,money);
     }
 
     @Override
     public Card queryCard(String cardId) throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.queryCard(cardId);
     }
 
     @Override
     public Card deleteCard(String cardId)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.deleteCard(cardId);
     }
 
     @Override
@@ -86,7 +81,6 @@ public class PassengerImpl implements Passenger
     public List<ConsumeRecord> queryConsumeRecord(String cardId)
         throws SubwayException
     {
-        //TODO 待考生实现
-        return null;
+        return cardManager.queryConsumeRecord(cardId);
     }
 }

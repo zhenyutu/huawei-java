@@ -1,6 +1,7 @@
 package huawei.method;
 
-import java.util.Scanner;
+import com.google.common.collect.Table;
+import huawei.model.Subways;
 
 public class Graph {
     private int vertexNum;
@@ -9,7 +10,6 @@ public class Graph {
 
     public Graph(int vertexNum){
         this.vertexNum = vertexNum;
-        this.edgeNum = 0;
         this.adj = (Bag<Edge>[]) new Bag[vertexNum];
 
         for (int i=0;i<vertexNum;i++){
@@ -17,21 +17,15 @@ public class Graph {
         }
     }
 
-    public Graph(String[] graphContent){
-        this(new Scanner(graphContent[0]).useDelimiter(" ").nextInt());
-        Scanner scanner = new Scanner(graphContent[0]);
-        scanner.useDelimiter(" ");
-        int vertexNum = scanner.nextInt();
-        int edgeNum = scanner.nextInt();
-        for(int i=0;i<edgeNum;i++){
-            Scanner tempScanner = new Scanner(graphContent[i+4]);
-            tempScanner.useDelimiter(" ");
-            int startPoint = tempScanner.nextInt();
-            int endPoint = tempScanner.nextInt();
-            int cost = tempScanner.nextInt();
-            int capacity = tempScanner.nextInt();
+    public Graph(Table<String, String, Subways.DistanceInfo> distanceTable){
+        this(40);
+        for (Table.Cell<String, String, Subways.DistanceInfo> row : distanceTable.cellSet()){
+            int startPoint = Integer.parseInt(row.getRowKey().substring(1));
+            int endPoint = Integer.parseInt(row.getColumnKey().substring(1));
+            int distance = row.getValue().getDistance();
+            String subwayName = row.getValue().getSubwayName();
 
-            addEdge(new Edge(startPoint,endPoint,cost,capacity));
+            addEdge(new Edge(startPoint,endPoint,distance,subwayName));
         }
     }
 
@@ -60,9 +54,7 @@ public class Graph {
 
     public void addEdge(Edge edge){
         int startPoint = edge.getStartPoint();
-        int endPoint = edge.getEndPoint();
         adj[startPoint].add(edge);
-        adj[endPoint].add(edge);
         edgeNum++;
     }
 

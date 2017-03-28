@@ -5,7 +5,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import huawei.biz.CardManager;
 import huawei.biz.SubwayManager;
+import huawei.exam.ReturnCodeEnum;
 import huawei.exam.SubwayException;
+import huawei.method.DijkstraSP;
+import huawei.method.Graph;
 import huawei.model.Card;
 import huawei.model.Subways;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class SubwayManagerImpl implements SubwayManager
     private static final String FIRST_STATION = "firstStation";
     private static final String LAST_STATION = "lastStation";
 
+    private Graph graph;
     private Subways subways = new Subways();
     private CardManager cardManager;
     public SubwayManagerImpl(CardManager cardManager)
@@ -52,8 +56,63 @@ public class SubwayManagerImpl implements SubwayManager
     public Card takeSubway(String cardId, String enterStation, String enterTime, String exitStation, String exitTime)
         throws SubwayException
     {
-        //TODO 待考生实现
+        Card card = cardManager.queryCard(cardId);
+        switch (card.getCardType()){
+            case A:
+                if (enterStation.equals(exitStation)){
+                    if (isOverTime(enterStation,exitStation)){
+                        if (card.getMoney()<3)
+                            throw new SubwayException(ReturnCodeEnum.E02,card);
+                        else
+                            card.setMoney(0);
+                    }
+                }else {
+                    int money = calculateCost(calculateDistance(enterStation,exitStation));
+                    if (money>card.getMoney())
+                        throw new SubwayException(ReturnCodeEnum.E02,card);
+                    else
+                        card.setMoney(0);
+                }
+                break;
+            case B:
+                
+            case C:
+
+            case D:
+
+            case E:
+        }
         return null;
+    }
+
+    public int calculateDistance(String enterStation,String exitStation){
+        DijkstraSP dijkstraSP = new DijkstraSP(graph,Integer.parseInt(enterStation.substring(1)));
+        return dijkstraSP.distTo(Integer.parseInt(exitStation.substring(1)));
+    }
+
+    public boolean isOverTime(String enterTime,String exitTime){
+        int enterHour = Integer.parseInt(enterTime.substring(0,2));
+        int enterSecond = Integer.parseInt(enterTime.substring(3,5));
+        int exitHour = Integer.parseInt(enterTime.substring(0,2));
+        int exitSecond = Integer.parseInt(enterTime.substring(3,5));
+
+        if ((exitHour-enterHour>0)&&(exitSecond-enterSecond>30))
+            return true;
+        else
+            return false;
+    }
+
+    public static int calculateCost(int distance){
+        int value = 0;
+        if (distance <= 3000)
+            value = 2;
+        else if (distance >3000 && distance <= 5000)
+            value = 3;
+        else if (distance >5000 && distance <= 10000)
+            value = 4;
+        else
+            value = 5;
+        return value;
     }
 
     @Override
@@ -86,6 +145,7 @@ public class SubwayManagerImpl implements SubwayManager
 
         subways.setSubwayInfo(subwayMap);
         subways.setStationDistances(initStationsTable());
+        graph = new Graph(subways.getStationDistances());
     }
 
     @Override
@@ -173,5 +233,12 @@ public class SubwayManagerImpl implements SubwayManager
         distanceTable.put("S37", "S36", new Subways.DistanceInfo("3", 1555));
         distanceTable.put("S38", "S37", new Subways.DistanceInfo("3", 1682));
         return distanceTable;
+    }
+
+    public Subways getSubways(){
+        return subways;
+    }
+    public Graph getGraph(){
+        return graph;
     }
 }
